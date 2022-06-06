@@ -48,34 +48,39 @@ NodeJS, ExpressJS, Docker, Postgresql (postgresjs, knex), JWT (jsonwebtoken), Je
 
 ## **Docker**
 
-docker ps = show all active container  
-docker ps -a = show all containers
+`docker images`  
+`docker ps` = show all active containers  
+`docker ps -a` = show all containers  
+`docker logs -f <containerId>` = follow logs inside container (good for node)
 
-docker stop, start, restart
+`docker stop, start, restart`
 
-docker exec -it <containerId> bin/bash sau sh
+`docker exec -it <containerId> bin/bash sau sh`
 
 <br>
 
 ## **Docker Compose**
 
-docker-compose up, down -d (detach)
+`docker-compose up, down -d `(detach)  
+`docker-compose up --build -d` check if anything has changed and if it has it is going to build it  
+`docker volume ls ` to see the persisted data from the db
 
 <br>
 
 ## **Postgres shortcuts**
 
-- start postgres from container (after exec)
-  `psql -U postgres`
+- start postgres from container (after exec) `psql -U postgres`
 
 <br>
 
 ### **MySQL equivalents in Postgres**
 
-show database = \l
+show database = `\l`
 
-use database = \c
+use database = `\c`
 
-show tables = \d
+show tables = `\d`
 
-show views = \dv
+show views = `\dv`
+
+describe table = `\d :tableName`
