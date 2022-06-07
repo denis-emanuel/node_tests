@@ -7,7 +7,7 @@ exports.createWebsite = async (req, res) => {
   try {
     await websiteSchema.validateAsync(req.body);
 
-    await knex("websites").insert({ ...req.body });
+    await knex("websites").insert({ user_id: res.locals.user.id, ...req.body });
 
     res.status(200).send({
       success: true,

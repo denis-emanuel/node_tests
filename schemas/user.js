@@ -9,3 +9,12 @@ exports.userRegisterSchema = Joi.object({
     .pattern(new RegExp("^[a-zA-Z0-9]{3,30}$"))
     .required(),
 });
+
+exports.userLoginSchema = Joi.object({
+  email: Joi.string().email().required(),
+  password: Joi.string()
+    .min(6)
+    .max(50)
+    .pattern(new RegExp("^[a-zA-Z0-9]{3,30}$"))
+    .required(),
+});
