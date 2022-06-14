@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.2](https://github.com/denis-emanuel/node_tests/compare/v2.0.1...v2.0.2) (2022-06-14)
+
+
+### Bug Fixes
+
+* **pleasure:** creating bugs ([16d7cab](https://github.com/denis-emanuel/node_tests/commit/16d7cab41fb7a869101e3bcae930f201961dfe18))
+
 ## [2.0.1](https://github.com/denis-emanuel/node_tests/compare/v2.0.0...v2.0.1) (2022-06-14)
 
 
