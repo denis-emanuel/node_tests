@@ -1,5 +1,18 @@
 # Changelog
 
+## [2.1.0](https://github.com/denis-emanuel/node_tests/compare/v2.0.2...v2.1.0) (2022-06-14)
+
+
+### Features
+
+* **feature1:** new feature no. 1 ([dcf7402](https://github.com/denis-emanuel/node_tests/commit/dcf7402c32f1782eedaef7d11450c15ad76786c2))
+* **feature2:** another feature, no. 2 ([e9c1caf](https://github.com/denis-emanuel/node_tests/commit/e9c1caf600d62156a40d8ac2a0e3c2f0e97fe923))
+
+
+### Bug Fixes
+
+* **feature1:** bugfix for feature1 ([4459c52](https://github.com/denis-emanuel/node_tests/commit/4459c52079540cd212265a67dba0bfec0b94b1d5))
+
 ## [2.0.2](https://github.com/denis-emanuel/node_tests/compare/v2.0.1...v2.0.2) (2022-06-14)
 
 
