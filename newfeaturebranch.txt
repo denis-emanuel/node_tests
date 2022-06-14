@@ -1,3 +1,5 @@
 adding a new feature on my new branch
 
 with some features
+
+a fix
