@@ -1,8 +1,3 @@
-// Update with your config settings.
-
-/**
- * @type { Object.<string, import("knex").Knex.Config> }
- */
 module.exports = {
   development: {
     client: "postgresql",
@@ -24,10 +19,10 @@ module.exports = {
     client: "postgresql",
     connection: {
       host: "localhost",
+      port: 5430,
       database: "postgres",
       user: "postgres",
       password: "postgres",
-      port: 5430,
     },
     pool: {
       min: 2,

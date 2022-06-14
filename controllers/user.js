@@ -1,9 +1,7 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs/dist/bcrypt");
 
-const dbOptions = require("../knexfile");
-const knex = require("knex")(dbOptions.development);
-
+const knex = require("../knex/knex");
 const { userRegisterSchema, userLoginSchema } = require("../schemas/user");
 
 exports.registerUser = async (req, res) => {
@@ -13,8 +11,9 @@ exports.registerUser = async (req, res) => {
     await userRegisterSchema.validateAsync(req.body);
 
     // verify if user already exists
-    const user = await knex("users").where({ email });
-    if (user[0]) {
+    const user = await knex("users").where({ email }).first();
+
+    if (user) {
       return res.status(409).send({
         success: false,
         message: "User with given email already exists",
@@ -26,46 +25,46 @@ exports.registerUser = async (req, res) => {
     await knex("users").insert({
       ...req.body,
       password: encryptedPassword,
-      role: "basic",
+      role: "advanced",
     });
 
-    res.status(200).send({
+    return res.send({
       success: true,
       message: "User registered successfully",
+      user: user,
     });
   } catch (err) {
-    console.error(err);
-    res.status(400).json({ success: false, message: "Register error" });
+    return res.status(400).send({ success: false, message: "Register error" });
   }
 };
 
 exports.loginUser = async (req, res) => {
   try {
     // validate data
-    await userLoginSchema.validate(req.body);
+    await userLoginSchema.validateAsync(req.body);
     const { email, password } = req.body;
 
     // verify if user exists
-    const user = await knex("users").where({ email });
-    if (!user[0]) {
+    const user = await knex("users").where({ email }).first();
+    if (!user) {
       return res
         .status(404)
         .send({ success: false, message: "User not found" });
     }
 
-    await bcrypt.compare(password, user[0].password, function (err, same) {
+    await bcrypt.compare(password, user.password, function (err, same) {
       if (same) {
         const token = jwt.sign(
-          { email, role: "basic" },
+          { email, role: "advanced" },
           process.env.REGISTER_PRIVATE_KEY,
           {
             expiresIn: "1h",
             algorithm: "HS256",
           }
         );
-        res.status(200).send(token);
+        return res.status(200).send({ token });
       } else {
-        res.status(400).send({
+        return res.status(400).send({
           success: false,
           message: "passwords do not match",
         });

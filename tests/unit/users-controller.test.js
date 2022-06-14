@@ -1,7 +1,7 @@
 const { registerUser } = require("../../controllers/user");
 
 describe("UsersController - Unit", () => {
-  it("baasfsd", () => {
+  it.skip("baasfsd", () => {
     registerUser();
   });
 });

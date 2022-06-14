@@ -1,56 +1,97 @@
-const request = require("supertest");
+const supertest = require("supertest");
+const jwt = require("jsonwebtoken");
 
 const server = require("../../server");
+const { registerRoute, loginRoute } = require("../routes");
+const knex = require("../../knex/knex");
+
+const request = supertest(server);
 
 describe("UsersController", () => {
-  //   it("should work", async () => {
-  //     // given
-  //     // when
-  //     // then
-
-  //     try {
-  //       await request(server)
-  //         .post(process.env.REGISTER_ROUTE)
-  //         .send({ test: "value" })
-  //         .expect(200);
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   });
-
-  it("let the user register when good credentials are provided", async () => {
-    try {
-      await request(server)
-        .post(process.env.REGISTER_ROUTE)
-        .send({
-          name: "Denis",
-          email: "pop.denis1902@gmail.com",
-          password: "longpassword",
-        })
-        .expect(200);
-    } catch (err) {
-      console.log(err);
-    }
+  beforeAll(() => {
+    knex.initialize();
   });
 
-  it.only("should throw an error when email is missing at register", async () => {
-    // try {
-    //   await request(server).post(process.env.REGISTER_ROUTE).send({
-    //     name: "Denis",
-    //     password: "longpassword",
-    //   });
-    // } catch (err) {
-    //   console.log(err);
-    // }
+  afterAll(() => {
+    knex.destroy();
+  });
 
-    const response = await request(server)
-      .post(process.env.REGISTER_ROUTE)
+  it("lets the user register when good credentials are provided", async () => {
+    const email = "pop.denis@gmail.com";
+    await knex("users").where({ email }).del();
+    const response = await request.post(registerRoute).send({
+      name: "Denis",
+      email,
+      password: "longpassword",
+    });
+
+    expect(response.statusCode).toEqual(200);
+    expect(response.body).toEqual({
+      message: "User registered successfully",
+      success: true,
+    });
+  });
+
+  it("should throw an error if password is shorter than 6 characters", async () => {
+    await request.post(registerRoute).send({
+      name: "Denis",
+      email: "pop.denis@gmail.com",
+      password: "pw",
+    });
+
+    await request
+      .post(registerRoute)
       .send({
         name: "Denis",
-        password: "1",
+        email: "pop.denis@gmail.com",
+        password: "pw",
+      })
+      .then((res) => {
+        expect(res.status).toBeGreaterThanOrEqual(400);
       });
 
-    expect(response.status).toEqual(400);
-    expect(response.body).toEqual({});
+    // expect(response.error.status).toBeGreaterThanOrEqual(400);
+  });
+
+  it("should throw an error if email is invalid", async () => {
+    const response = await request.post(registerRoute).send({
+      name: "Denis",
+      email: "pop.denis",
+      password: "longpassword",
+    });
+
+    expect(response.error.status).toEqual(400);
+  });
+
+  it("should throw an error if name has less than 3 characters", async () => {
+    const response = await request.post(registerRoute).send({
+      name: "D",
+      email: "pop.denis@gmail.com",
+      password: "longpassword",
+    });
+
+    expect(response.error.status).toEqual(400);
+  });
+
+  it("should let the user log in when good credentials are provided", async () => {
+    const name = "Denis";
+    const email = "pop.denis1902@gmail.com";
+    const password = "hashedpassword";
+
+    await request.post(registerRoute).send({
+      name,
+      email,
+      password,
+    });
+
+    await request
+      .post(loginRoute)
+      .send({
+        email,
+        password,
+      })
+      .expect(function (res) {
+        expect(res.body.token).toBeDefined();
+      });
   });
 });

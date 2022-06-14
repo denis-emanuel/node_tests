@@ -1,5 +1,5 @@
 const dbOptions = require("../knexfile");
-const knex = require("knex")(dbOptions.development);
+const knex = require("knex")(dbOptions[process.env.NODE_ENV]);
 const jwt = require("jsonwebtoken");
 
 exports.websitesMiddleware = async (req, res, next) => {
@@ -21,7 +21,7 @@ exports.websitesMiddleware = async (req, res, next) => {
   }
 
   //verify if token is expired
-  if (decoded.exp * 1000 < Date.now()) {
+  if (decoded.exp * 1000 <= Date.now()) {
     return res.status(401).send({
       success: false,
       message: "Token expired",
@@ -30,25 +30,25 @@ exports.websitesMiddleware = async (req, res, next) => {
 
   if (decoded.role !== "basic" && decoded.role !== "advanced") {
     console.log(decoded.role);
-    return res.status(401).send({
+    return res.status(403).send({
       success: false,
       message: "No permission",
     });
   }
 
   //pass decoded info about user to the next middleware
-  const user = await knex("users").where({ email: decoded.email });
+  const user = await knex("users").where({ email: decoded.email }).first();
 
-  res.locals.user = user[0];
+  res.locals.user = user;
 
   next();
 };
 
 exports.websiteIdMiddleware = async (req, res, next) => {
   const userId = res.locals.user.id;
-  const website = await knex("websites").where({ id: req.params.id });
+  const website = await knex("websites").where({ id: req.params.id }).first();
 
-  if (res.locals.user.role !== "advanced" && userId !== website[0]?.user_id) {
+  if (res.locals.user.role !== "advanced" && userId !== website?.user_id) {
     return res.status(401).send({
       success: false,
       message: "User is not the owner of the website or user is not an admin",

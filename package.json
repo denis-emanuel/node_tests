@@ -6,7 +6,9 @@
   "scripts": {
     "start:dev": "NODE_ENV=development nodemon app.js",
     "migrate:dev": "NODE_ENV=development knex migrate:latest",
-    "test": "jest"
+    "migrate:test": "NODE_ENV=test knex migrate:latest & NODE_ENV=test knex seed:run",
+    "test:e2e": "NODE_ENV=test jest tests/integration",
+    "test:watch": "jest --watch"
   },
   "keywords": [],
   "author": "",
@@ -18,7 +20,8 @@
     "joi": "^17.6.0",
     "jsonwebtoken": "^8.5.1",
     "knex": "^2.1.0",
-    "pg": "^8.7.3"
+    "pg": "^8.7.3",
+    "release-please": "^13.18.3"
   },
   "devDependencies": {
     "@types/jest": "^28.1.1",
