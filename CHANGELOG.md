@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.0.0](https://github.com/denis-emanuel/node_tests/compare/v1.1.1...v2.0.0) (2022-06-14)
+
+
+### ⚠ BREAKING CHANGES
+
+* **api:** that's a breaking change
+
+### Features
+
+* **api:** state of the art change ([34ee389](https://github.com/denis-emanuel/node_tests/commit/34ee389276a7b2dc1dcc3b985ef75e8d8e7bb5f3))
+
 ## [1.1.1](https://github.com/denis-emanuel/node_tests/compare/v1.1.0...v1.1.1) (2022-06-14)
 
 
