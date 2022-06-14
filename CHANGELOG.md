@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.1](https://github.com/denis-emanuel/node_tests/compare/v1.1.0...v1.1.1) (2022-06-14)
+
+
+### Bug Fixes
+
+* **api:** fixed the api calls ([684d859](https://github.com/denis-emanuel/node_tests/commit/684d8591cff3a33fd679a85079e63de874601dc4))
+
 ## [1.1.0](https://github.com/denis-emanuel/node_tests/compare/v1.0.0...v1.1.0) (2022-06-14)
 
 
